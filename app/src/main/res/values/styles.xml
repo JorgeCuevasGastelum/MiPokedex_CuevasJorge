@@ -1,0 +1,32 @@
+<resources>
+
+    <!-- Titulo principal -->
+    <style name="PokemonTitle">
+        <item name="android:textSize">38sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <!-- Numero -->
+    <style name="PokemonNumber">
+        <item name="android:textSize">25sp</item>
+    </style>
+
+    <!-- Labels rojos (Altura, Peso, Habilidad) -->
+    <style name="PokemonLabel">
+        <item name="android:textColor">@color/pokemon_red</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!-- Valores -->
+    <style name="PokemonValue">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!-- Descripcion -->
+    <style name="PokemonDescription">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+</resources>
