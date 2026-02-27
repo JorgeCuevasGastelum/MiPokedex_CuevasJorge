@@ -43,7 +43,7 @@ import cuevas.jorge.composepokedex.ui.theme.OffWhite
 
 class MainActivity : ComponentActivity() {
 
-    val pokemon = Pokemon("Pikachu", 25, "Eléctrico", "Lorem", 0.4f, 6.0f, true, "Estática", R.drawable.pikachu)
+    val pokemon = Pokemon("Pikachu", 25, "Eléctrico", "Descripción", 0.4f, 6.0f, true, "Estática", R.drawable.pikachu)
 
             override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
