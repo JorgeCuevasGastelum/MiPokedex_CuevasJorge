@@ -51,7 +51,7 @@ fun MyApp() {
                 pokemon = pokemon,
                 neighbors = Pair(prev, next),
                 onNavigate = { newId -> navController.navigate(PokemonDetail(newId)) },
-                onBack = { navController.popBackStack() } // Esto regresa a la pantalla anterior (el menu)
+                onBack = { navController.popBackStack(PokemonList, inclusive = false) } // Esto regresa a la pantalla anterior (el menu)
             )
         }
     }
