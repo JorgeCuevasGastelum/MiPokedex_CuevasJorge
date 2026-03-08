@@ -1,6 +1,7 @@
 package cuevas.jorge.composepokedex.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,15 +20,27 @@ import androidx.compose.ui.unit.dp
 import cuevas.jorge.composepokedex.R
 
 @Composable
-fun PokemonHeader(name: String, number: Int, fav: Boolean){
-    Row(Modifier.fillMaxWidth().padding(15.dp), horizontalArrangement = Arrangement.SpaceBetween){
+fun PokemonHeader(name: String, number: Int, fav: Boolean, onBack: () -> Unit) {
+    Row(Modifier.fillMaxWidth().padding(15.dp), horizontalArrangement = Arrangement.SpaceBetween) {
         Column() {
             Text(name, modifier = Modifier.padding(top = 15.dp))
             Text("#${number}", modifier = Modifier.align(Alignment.End))
         }
         Box {
-            Image(painter = painterResource(R.drawable.pokeball), "pokeball image", contentScale = ContentScale.Fit, modifier = Modifier.size(130.dp).offset(30.dp, 20.dp))
-            Image(painter = painterResource(if(fav)R.drawable.star_filled else R.drawable.baseline_star_border_24), contentDescription = if(fav) "star filled" else "star outline", modifier = Modifier.align(Alignment.TopEnd))
+            Image(
+                painter = painterResource(R.drawable.pokeball),
+                contentDescription = "pokeball image",
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .size(130.dp)
+                    .offset(30.dp, 20.dp)
+                    .clickable { onBack() } // agrege la opcion de volver al menu clickeando la pokebola
+            )
+            Image(
+                painter = painterResource(if(fav) R.drawable.star_filled else R.drawable.baseline_star_border_24),
+                contentDescription = if(fav) "star filled" else "star outline",
+                modifier = Modifier.align(Alignment.TopEnd)
+            )
         }
     }
 }
