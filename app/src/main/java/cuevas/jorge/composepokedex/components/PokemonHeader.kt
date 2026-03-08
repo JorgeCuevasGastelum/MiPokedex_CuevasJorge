@@ -22,12 +22,12 @@ import cuevas.jorge.composepokedex.R
 fun PokemonHeader(name: String, number: Int, fav: Boolean){
     Row(Modifier.fillMaxWidth().padding(15.dp), horizontalArrangement = Arrangement.SpaceBetween){
         Column() {
-            Text(name)
+            Text(name, modifier = Modifier.padding(top = 15.dp))
             Text("#${number}", modifier = Modifier.align(Alignment.End))
         }
         Box {
             Image(painter = painterResource(R.drawable.pokeball), "pokeball image", contentScale = ContentScale.Fit, modifier = Modifier.size(130.dp).offset(30.dp, 20.dp))
-            Image(painter = painterResource(if(fav)R.drawable.star_filled else R.drawable.star_outline), contentDescription = if(fav) "star filled" else "star outline", modifier = Modifier.align(Alignment.TopEnd))
+            Image(painter = painterResource(if(fav)R.drawable.star_filled else R.drawable.baseline_star_border_24), contentDescription = if(fav) "star filled" else "star outline", modifier = Modifier.align(Alignment.TopEnd))
         }
     }
 }

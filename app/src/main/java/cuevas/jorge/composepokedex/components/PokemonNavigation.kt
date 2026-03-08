@@ -22,26 +22,28 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cuevas.jorge.composepokedex.R
+import cuevas.jorge.composepokedex.domain.Pokemon
+import cuevas.jorge.composepokedex.dummies.returnOnePokemon
 
 
 @Preview(showBackground = true)
 @Composable
 fun PokemonNavigationPreview(){
     PokemonNavigation(
-        position = "left",
-        image = R.drawable.arbok,
-        name = "Arbok",
-        number = 24
+        position = "right",
+        returnOnePokemon(),
+        onNavigate = { id -> /* No hace nada en el preview */ }
     )
 
 }
 @Composable
 fun PokemonNavigation(
     position: String,
-    image: Int,
-    name: String,
-    number: Int
+    pokemon: Pokemon?, // Recibe el objeto completo
+    onNavigate: (Int) -> Unit // Accion de navegación
 ) {
+
+    if (pokemon == null) return
 
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -49,7 +51,7 @@ fun PokemonNavigation(
 
         if (position == "left") {
             IconButton(
-                onClick = { },
+                onClick = { onNavigate(pokemon.number) },
                 modifier = Modifier
                     .size(36.dp)
                     .background(Color.DarkGray, CircleShape)
@@ -67,19 +69,19 @@ fun PokemonNavigation(
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
             Image(
-                painter = painterResource(id = image),
-                contentDescription = name,
+                painter = painterResource(id = pokemon.image),
+                contentDescription = pokemon.name,
                 modifier = Modifier.size(70.dp)
             )
 
-            Text("$name N.° ${"%04d".format(number)}")
+            Text("${pokemon.name} N.° ${"%04d".format(pokemon.number)}")
         }
 
         Spacer(modifier = Modifier.width(8.dp))
 
         if (position == "right") {
             IconButton(
-                onClick = { },
+                onClick = { onNavigate(pokemon.number) },
                 modifier = Modifier
                     .size(36.dp)
                     .background(Color.DarkGray, CircleShape)

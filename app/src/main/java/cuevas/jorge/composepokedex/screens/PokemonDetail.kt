@@ -30,25 +30,32 @@ import cuevas.jorge.composepokedex.components.Chip
 import cuevas.jorge.composepokedex.components.PokemonHeader
 import cuevas.jorge.composepokedex.components.PokemonNavigation
 import cuevas.jorge.composepokedex.domain.Pokemon
+import cuevas.jorge.composepokedex.dummies.returnOnePokemon
 import cuevas.jorge.composepokedex.ui.theme.ComposePokedexTheme
 import cuevas.jorge.composepokedex.ui.theme.ElectricYellow
 import cuevas.jorge.composepokedex.ui.theme.OffWhite
+import cuevas.jorge.composepokedex.utilities.getColorByType
 
 
 @Preview(showBackground = true)
 @Composable
-fun PokemonDetailPreview(){
-    ComposePokedexTheme(){
-        val pokemon = Pokemon("Pikachu", 25, "Eléctrico", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", 0.4f, 6.0f, true, "Estática", R.drawable.pikachu)
-        PokemonDetailScreen(pokemon)
+fun PokemonDetailPreview() {
+    ComposePokedexTheme {
+        val pokemonEjemplo = returnOnePokemon()
+
+        PokemonDetailScreen(
+            pokemon = pokemonEjemplo,
+            neighbors = Pair(returnOnePokemon(), returnOnePokemon()),
+            onNavigate = { id -> /* No hace nada en el preview */ }
+        )
     }
 }
-
 @Composable
-fun PokemonDetailScreen(pokemon: Pokemon, modifier: Modifier = Modifier) {
-    Column(Modifier.background(ElectricYellow, RectangleShape)) {
+fun PokemonDetailScreen(pokemon: Pokemon, neighbors: Pair<Pokemon?, Pokemon?>, onNavigate: (Int) -> Unit, modifier: Modifier = Modifier) {
+    //cambiar color
+    Column(Modifier.background(getColorByType(pokemon).first, RectangleShape)) {
         PokemonHeader(pokemon.name, pokemon.number, pokemon.fav)
-        PokemonCard(pokemon.name,pokemon.weight, pokemon.height, pokemon.description, pokemon.ability, pokemon.type, pokemon.image)
+        PokemonCard(pokemon, neighbors, onNavigate)
 
     }
 }
@@ -56,11 +63,11 @@ fun PokemonDetailScreen(pokemon: Pokemon, modifier: Modifier = Modifier) {
 
 
 @Composable
-fun PokemonCard(name: String, weight: Float, height: Float, descripcion: String, ability: String, type: String, image: Int){
+fun PokemonCard(pokemon: Pokemon, neighbors: Pair<Pokemon?, Pokemon?>, onNavigate: (Int) -> Unit){
     Box(contentAlignment = Alignment.TopCenter){
         Image(
-            painter = painterResource(id = image),
-            contentDescription = name,
+            painter = painterResource(id = pokemon.image),
+            contentDescription = pokemon.name,
             modifier = Modifier
                 .offset(x = 0.dp, y = -80.dp)
                 .zIndex(2f)
@@ -69,44 +76,34 @@ fun PokemonCard(name: String, weight: Float, height: Float, descripcion: String,
         )
         Card(Modifier.fillMaxWidth().fillMaxHeight(), elevation = CardDefaults.cardElevation(defaultElevation = 6.dp), colors = CardDefaults.cardColors(containerColor = OffWhite)){
             Column(Modifier.fillMaxWidth()) {
-                Chip(type, ElectricYellow, Modifier.padding(top = 70.dp).align(Alignment.CenterHorizontally))
+                Chip(pokemon.type, getColorByType(pokemon).first, Modifier.padding(top = 70.dp).align(Alignment.CenterHorizontally))
                 Row(modifier = Modifier.fillMaxWidth(.8f).align(Alignment.CenterHorizontally).padding(top = 15.dp), horizontalArrangement = Arrangement.SpaceEvenly){
                     Column() {
-                        Ability("row", "Altura" ,"${height}m")
-                        Ability("row", "Peso" ,"${weight}kg")
+                        Ability("row", "Altura" ,"${pokemon.height}m")
+                        Ability("row", "Peso" ,"${pokemon.weight}kg")
 
                     }
-                    Ability("column", "Habilidad", "${ability}")
+                    Ability("column", "Habilidad", "${pokemon.ability}")
                 }
                 Row(Modifier.fillMaxWidth(.8f).align(Alignment.CenterHorizontally).padding(25.dp)) {
-                    Text(descripcion)
+                    Text(pokemon.description)
 
                     Spacer(modifier = Modifier.weight(1f))
 
                 }
                 Spacer(modifier = Modifier.weight(1f))
 
+                // NAVEGACION
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp).padding(bottom = 10.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                        .padding(horizontal = 10.dp)
+                        .padding(bottom = 50.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    //Crear objeto pokemon y enviarlo como parametro se podria hacer aqui
-                    PokemonNavigation(
-                        position = "left",
-                        image = R.drawable.arbok,
-                        name = "Arbok",
-                        number = 24
-                    )
-
-                    PokemonNavigation(
-                        position = "right",
-                        image = R.drawable.raichu,
-                        name = "Raichu",
-                        number = 26
-                    )
+                    PokemonNavigation("left", neighbors.first, onNavigate)
+                    Spacer(modifier = Modifier.weight(1f))
+                    PokemonNavigation("right", neighbors.second, onNavigate)
                 }
 
             }
